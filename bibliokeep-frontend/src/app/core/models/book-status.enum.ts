@@ -1,0 +1,7 @@
+export enum BookStatus {
+  DESEADO = 'DESEADO',
+  COMPRADO = 'COMPRADO',
+  LEYENDO = 'LEYENDO',
+  LEIDO = 'LEIDO',
+  ABANDONADO = 'ABANDONADO'
+}

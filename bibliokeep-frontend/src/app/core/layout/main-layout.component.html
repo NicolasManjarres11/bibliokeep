@@ -1,0 +1,105 @@
+<div class="flex h-screen bg-gray-50">
+  <!-- Sidebar Overlay (Mobile) -->
+  @if (isSidebarOpen()) {
+    <div
+    class="fixed inset-0 bg-white/30 backdrop-blur-sm z-40 lg:hidden"
+      (click)="closeSidebar()"
+      aria-hidden="true"
+    ></div>
+  }
+
+  <!-- Sidebar -->
+  <aside
+    class="fixed lg:static inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out lg:translate-x-0"
+    [class.translate-x-0]="isSidebarOpen()"
+    [class.-translate-x-full]="!isSidebarOpen()"
+  >
+    <div class="flex flex-col h-full">
+      <!-- Sidebar Header -->
+      <div class="flex items-center justify-between p-4 border-b border-gray-200">
+        <h2 class="text-xl font-bold text-gray-900">BiblioKeep</h2>
+        <button
+          type="button"
+          class="lg:hidden p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100"
+          (click)="closeSidebar()"
+          aria-label="Close sidebar"
+        >
+          <lucide-icon [name]="X" [size]="20" />
+        </button>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="flex-1 p-4 space-y-2">
+        <a
+          routerLink="/dashboard"
+          routerLinkActive="bg-blue-50 text-blue-700 border-blue-200"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors border border-transparent"
+          (click)="closeSidebar()"
+        >
+          <lucide-icon [name]="LayoutDashboard" [size]="20" />
+          <span class="font-medium">Dashboard</span>
+        </a>
+
+        <a
+          routerLink="/library"
+          routerLinkActive="bg-blue-50 text-blue-700 border-blue-200"
+          class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors border border-transparent"
+          (click)="closeSidebar()"
+        >
+          <lucide-icon [name]="BookOpen" [size]="20" />
+          <span class="font-medium">Biblioteca</span>
+        </a>
+
+        <a
+          routerLink="/loans"
+          routerLinkActive="bg-blue-50 text-blue-700 border-blue-200"
+          class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors border border-transparent"
+          (click)="closeSidebar()"
+        >
+          <lucide-icon [name]="Handshake" [size]="20" />
+          <span class="font-medium">Préstamos</span>
+        </a>
+      </nav>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-200 px-4 py-4 lg:px-6">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <button
+            type="button"
+            class="lg:hidden p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100"
+            (click)="toggleSidebar()"
+            aria-label="Toggle sidebar"
+          >
+            <lucide-icon [name]="Menu" [size]="24" />
+          </button>
+        </div>
+        <!-- Right side: Title and Profile -->
+        <div class="flex items-center gap-4">
+          <h1 class="text-2xl font-bold text-gray-900 hidden md:block">BiblioKeep</h1>
+
+          <button
+            type="button"
+            class="flex items-center gap-2 px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer"
+            aria-label="Perfil de usuario"
+          >
+            <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
+              <span class="text-sm font-semibold text-gray-700">U</span>
+            </div>
+            <span class="text-sm font-medium hidden sm:inline">Perfil</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <main class="flex-1 overflow-y-auto p-4 lg:p-6">
+      <router-outlet />
+    </main>
+  </div>
+</div>

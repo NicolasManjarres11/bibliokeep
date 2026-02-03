@@ -1,0 +1,85 @@
+<div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 border border-gray-200">
+  <!-- Thumbnail -->
+  @if (book.thumbnail) {
+    <div class="w-full h-64 bg-gray-200 overflow-hidden">
+      <img
+        [src]="book.thumbnail"
+        [alt]="book.title"
+        class="w-full h-full object-cover"
+        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\'%3E%3Crect fill=\'%23ddd\' width=\'200\' height=\'200\'/%3E%3Ctext fill=\'%23999\' font-family=\'sans-serif\' font-size=\'14\' dy=\'10.5\' text-anchor=\'middle\' x=\'100\' y=\'100\'%3ENo Image%3C/text%3E%3C/svg%3E'"
+      />
+    </div>
+  } @else {
+    <div class="w-full h-64 bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
+      <lucide-icon [name]="BookOpen" [size]="48" class="text-gray-400" />
+    </div>
+  }
+
+  <!-- Content -->
+  <div class="p-4">
+    <!-- Title -->
+    <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 min-h-[3.5rem]">
+      {{ book.title }}
+    </h3>
+
+    <!-- Authors -->
+    @if (book.authors && book.authors.length > 0) {
+      <p class="text-sm text-gray-600 mb-3 line-clamp-1">
+        {{ book.authors.join(', ') }}
+      </p>
+    }
+
+    <!-- Status Badge -->
+    <div class="mb-3">
+      <select
+        [value]="book.status"
+        (change)="onStatusChange($any($event.target).value)"
+        [class]="'text-xs font-medium px-2 py-1 rounded-full border-0 cursor-pointer ' + getStatusColor(book.status)"
+      >
+        @for (status of [BookStatus.DESEADO, BookStatus.COMPRADO, BookStatus.LEYENDO, BookStatus.LEIDO, BookStatus.ABANDONADO]; track status) {
+          <option [value]="status">{{ getStatusLabel(status) }}</option>
+        }
+      </select>
+    </div>
+
+    <!-- Rating -->
+    <div class="flex items-center gap-2 mb-3">
+      <span class="text-sm text-gray-600">Rating:</span>
+      <div class="flex gap-1">
+        @for (star of [1, 2, 3, 4, 5]; track star) {
+          <button
+            type="button"
+            (click)="onRatingChange(star)"
+            class="focus:outline-none transition-colors"
+            [class.text-yellow-400]="book.rating && star <= book.rating"
+            [class.text-gray-300]="!book.rating || star > book.rating"
+          >
+            <lucide-icon
+              [name]="book.rating && star <= book.rating ? Star : StarOff"
+              [size]="18"
+            />
+          </button>
+        }
+        @if (book.rating) {
+          <button
+            type="button"
+            (click)="onRatingChange(undefined)"
+            class="ml-2 text-xs text-gray-500 hover:text-gray-700"
+          >
+            Limpiar
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- ISBN -->
+    <p class="text-xs text-gray-500 mb-2">ISBN: {{ book.isbn }}</p>
+
+    <!-- Lent Badge -->
+    @if (book.isLent) {
+      <div class="inline-block bg-orange-100 text-orange-700 text-xs font-medium px-2 py-1 rounded-full">
+        Prestado
+      </div>
+    }
+  </div>
+</div>

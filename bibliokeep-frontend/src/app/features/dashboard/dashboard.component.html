@@ -1,0 +1,34 @@
+<div class="max-w-7xl mx-auto">
+  <h2 class="text-3xl font-bold text-gray-900 mb-2">Dashboard</h2>
+  <p class="text-gray-600 mb-6">Resumen visual (próximamente con métricas reales).</p>
+  
+  <!-- Metrics Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Meta anual -->
+    <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200">
+      <h3 class="text-sm font-medium text-gray-600 mb-2">Meta anual</h3>
+      <div class="flex items-baseline gap-2">
+        <span class="text-4xl font-bold text-gray-900">{{ annualGoal() }}</span>
+        <span class="text-lg text-gray-600">libros</span>
+      </div>
+    </div>
+
+    <!-- Leyendo -->
+    <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200">
+      <h3 class="text-sm font-medium text-gray-600 mb-2">Leyendo</h3>
+      <div class="flex items-baseline gap-2">
+        <span class="text-4xl font-bold text-gray-900">{{ readingCount() }}</span>
+        <span class="text-lg text-gray-600">en progreso</span>
+      </div>
+    </div>
+
+    <!-- Préstamos activos -->
+    <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200">
+      <h3 class="text-sm font-medium text-gray-600 mb-2">Préstamos activos</h3>
+      <div class="flex items-baseline gap-2">
+        <span class="text-4xl font-bold text-gray-900">{{ activeLoans() }}</span>
+        <span class="text-lg text-gray-600">pendientes</span>
+      </div>
+    </div>
+  </div>
+</div>

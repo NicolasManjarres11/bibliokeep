@@ -1,0 +1,93 @@
+<div class="max-w-7xl mx-auto">
+  <!-- Header -->
+  <div class="mb-6">
+    <h2 class="text-3xl font-bold text-gray-900 mb-4">Biblioteca</h2>
+    
+    <!-- Search Bar -->
+    <div class="flex gap-4 mb-4">
+      <div class="flex-1 relative">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <lucide-icon [name]="Search" [size]="20" class="text-gray-400" />
+        </div>
+        <input
+          type="text"
+          [value]="searchInput()"
+          (input)="onSearch($any($event.target).value)"
+          placeholder="Buscar por título, autor o ISBN..."
+          class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+        />
+      </div>
+      <button
+        type="button"
+        (click)="toggleFilters()"
+        class="px-4 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors flex items-center gap-2"
+      >
+        <lucide-icon [name]="Filter" [size]="20" />
+        <span class="hidden sm:inline">Filtros</span>
+      </button>
+    </div>
+
+    <!-- Filters -->
+    @if (showFilters()) {
+      <div class="bg-white border border-gray-200 rounded-lg p-4 mb-4">
+        <div class="flex flex-wrap gap-2">
+          <button
+            type="button"
+            (click)="onFilterChange('ALL')"
+            class="px-4 py-2 rounded-full text-sm font-medium transition-colors"
+            [class.bg-blue-600]="bookStore.filterStatus() === null"
+            [class.text-white]="bookStore.filterStatus() === null"
+            [class.bg-gray-100]="bookStore.filterStatus() !== null"
+            [class.text-gray-700]="bookStore.filterStatus() !== null"
+            [class.hover:bg-gray-200]="bookStore.filterStatus() !== null"
+          >
+            Todos
+          </button>
+          @for (status of [BookStatus.DESEADO, BookStatus.COMPRADO, BookStatus.LEYENDO, BookStatus.LEIDO, BookStatus.ABANDONADO]; track status) {
+            <button
+              type="button"
+              (click)="onFilterChange(status)"
+              class="px-4 py-2 rounded-full text-sm font-medium transition-colors"
+              [class.bg-blue-600]="bookStore.filterStatus() === status"
+              [class.text-white]="bookStore.filterStatus() === status"
+              [class.bg-gray-100]="bookStore.filterStatus() !== status"
+              [class.text-gray-700]="bookStore.filterStatus() !== status"
+              [class.hover:bg-gray-200]="bookStore.filterStatus() !== status"
+            >
+              {{ getStatusLabel(status) }}
+            </button>
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading()) {
+    <div class="flex justify-center items-center py-12">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+    </div>
+  }
+
+  <!-- Books Grid -->
+  @if (!isLoading() && books().length > 0) {
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      @for (book of books(); track book.id) {
+        <app-book-card [book]="book" />
+      }
+    </div>
+  }
+
+  <!-- Empty State -->
+  @if (!isLoading() && books().length === 0) {
+    <div class="text-center py-12">
+      <p class="text-gray-600 text-lg mb-2">
+        @if (bookStore.searchQuery() || bookStore.filterStatus()) {
+          No se encontraron libros con los filtros aplicados.
+        } @else {
+          Tu biblioteca está vacía. ¡Comienza agregando libros!
+        }
+      </p>
+    </div>
+  }
+</div>
