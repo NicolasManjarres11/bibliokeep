@@ -15,7 +15,7 @@ import { LucideAngularModule, Search, Filter } from 'lucide-angular';
   styleUrl: './library.component.css'
 })
 export class LibraryComponent implements OnInit {
-  private readonly bookStore = inject(BookStoreService);
+  public readonly bookStore = inject(BookStoreService);
   private readonly userHelper = inject(UserHelperService);
 
   private userId: string | null = null;
