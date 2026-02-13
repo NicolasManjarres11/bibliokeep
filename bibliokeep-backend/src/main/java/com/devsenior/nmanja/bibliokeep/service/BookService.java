@@ -11,6 +11,8 @@ public interface BookService {
 
     BookResponseDTO create(UUID ownerId, BookRequestDTO request);
 
+    List<BookResponseDTO> getAllBooks();
+
     List<BookResponseDTO> findAllByOwnerId(UUID ownerId);
 
     BookResponseDTO findByIdAndOwnerId(Long id, UUID ownerId);

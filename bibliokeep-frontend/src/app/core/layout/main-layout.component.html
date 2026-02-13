@@ -83,16 +83,23 @@
         <div class="flex items-center gap-4">
           <h1 class="text-2xl font-bold text-gray-900 hidden md:block">BiblioKeep</h1>
 
-          <button
-            type="button"
-            class="flex items-center gap-2 px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer"
-            aria-label="Perfil de usuario"
-          >
-            <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-              <span class="text-sm font-semibold text-gray-700">U</span>
+          <div class="relative">
+            <button
+              type="button"
+              class="flex items-center gap-2 px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer"
+              aria-label="Perfil de usuario"
+              (click)="toggleProfileMenu()"
+            >
+              <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
+                <span class="text-sm font-semibold text-gray-700">U</span>
+              </div>
+              <span class="text-sm font-medium hidden sm:inline">Perfil</span>
+            </button>
+
+            <div [hidden]="!isProfileMenuOpen()" class="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-50" [attr.aria-hidden]="!isProfileMenuOpen()">
+              <button (click)="logout()" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Cerrar sesión</button>
             </div>
-            <span class="text-sm font-medium hidden sm:inline">Perfil</span>
-          </button>
+          </div>
         </div>
       </div>
     </header>

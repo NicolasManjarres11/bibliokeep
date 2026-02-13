@@ -3,6 +3,7 @@ package com.devsenior.nmanja.bibliokeep.service.impl;
 import com.devsenior.nmanja.bibliokeep.mapper.UserMapper;
 import com.devsenior.nmanja.bibliokeep.model.dto.UserRequestDTO;
 import com.devsenior.nmanja.bibliokeep.model.dto.UserResponseDTO;
+import com.devsenior.nmanja.bibliokeep.repository.RoleRepository;
 import com.devsenior.nmanja.bibliokeep.repository.UserRepository;
 import com.devsenior.nmanja.bibliokeep.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
@@ -30,6 +32,15 @@ public class UserServiceImpl implements UserService {
 
         var user = userMapper.toEntity(request);
         user.setPassword(passwordEncoder.encode(request.password()));
+        if(user.getRoles() != null){
+
+            var roles = user.getRoles().stream()
+                .map(r -> roleRepository.findByName(r.getName()).orElse(null))
+                .filter(r -> r!= null)
+                .toList();
+
+            user.setRoles(roles);
+        }
         
         if (user.getAnnualGoal() == null) {
             user.setAnnualGoal(12);
@@ -76,12 +87,22 @@ public class UserServiceImpl implements UserService {
         }
 
         userMapper.updateEntityFromDTO(request, user);
+
+/*         if(user.getRoles() != null){
+
+            var roles = user.getRoles().stream()
+                .map(r -> roleRepository.findByName(r.getName()).orElse(null))
+                .filter(r -> r!= null)
+                .toList();
+                
+            user.setRoles(roles);
+        } */
         
         if (request.password() != null && !request.password().isBlank()) {
             user.setPassword(passwordEncoder.encode(request.password()));
         }
 
-        var updatedUser = userRepository.save(user);
+        var updatedUser = userRepository.saveAndFlush(user);
         return userMapper.toResponseDTO(updatedUser);
     }
 

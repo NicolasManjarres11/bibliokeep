@@ -3,11 +3,19 @@ import { MainLayoutComponent } from './core/layout/main-layout.component';
 import { DashboardComponent } from './features/dashboard/dashboard.component';
 import { LibraryComponent } from './features/library/library.component';
 import { LoansComponent } from './features/loans/loans.component';
+import { Login } from './features/login/login';
+import { authGuard } from './core/guard/auth-guard';
+import { adminGuard } from './core/guard/admin-guard';
 
 export const routes: Routes = [
   {
+    path: 'login',
+    component: Login
+  },
+  {
     path: '',
     component: MainLayoutComponent,
+    canActivateChild: [authGuard],
     children: [
       {
         path: '',
@@ -24,7 +32,8 @@ export const routes: Routes = [
       },
       {
         path: 'loans',
-        component: LoansComponent
+        component: LoansComponent,
+        canActivate: [adminGuard]
       }
     ]
   }

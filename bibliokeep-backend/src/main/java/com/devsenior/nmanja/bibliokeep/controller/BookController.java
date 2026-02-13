@@ -4,6 +4,8 @@ import com.devsenior.nmanja.bibliokeep.model.dto.BookRequestDTO;
 import com.devsenior.nmanja.bibliokeep.model.dto.BookResponseDTO;
 import com.devsenior.nmanja.bibliokeep.model.dto.BookStatusUpdateDTO;
 import com.devsenior.nmanja.bibliokeep.service.BookService;
+import com.devsenior.nmanja.bibliokeep.service.SecurityService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,19 +22,28 @@ import java.util.UUID;
 public class BookController {
 
     private final BookService bookService;
+    private final SecurityService securityService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public BookResponseDTO create(
-            @RequestHeader("user-id") String userId,
-            @Valid @RequestBody BookRequestDTO request) {
-        return bookService.create(UUID.fromString(userId), request);
+            HttpServletRequest request,
+            @Valid @RequestBody BookRequestDTO newBook) {
+
+        var userId = securityService.getCurrentUserId(request);
+        return bookService.create(userId, newBook);
     }
 
     @GetMapping
-    public List<BookResponseDTO> findAll(@RequestHeader("user-id") String userId) {
-        return bookService.findAllByOwnerId(UUID.fromString(userId));
+    public List<BookResponseDTO> findAll(HttpServletRequest request) {
+        var userId = securityService.getCurrentUserId(request);
+        return bookService.findAllByOwnerId(userId);
     }
+
+/*     @GetMapping
+    public List<BookResponseDTO> getAllBooks (){
+        return bookService.getAllBooks();
+    } */
 
     @GetMapping("/search")
     public List<BookResponseDTO> search(

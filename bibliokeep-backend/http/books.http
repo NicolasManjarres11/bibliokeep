@@ -2,4 +2,24 @@
 
 ###
 GET http://localhost:8080/api/books
-user-id: 65fdfaf9-7fd5-4e9e-962c-72376e159ce9
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJtYW5qYUBleGFtcGxlLmNvbSIsInJvbGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX1VTRVIiXSwidXNlci1pZCI6IjY1ZmRmYWY5LTdmZDUtNGU5ZS05NjJjLTcyMzc2ZTE1OWNlOSIsImlhdCI6MTc3MDg0MzM0NSwiZXhwIjoxNzcwOTI5NzQ1fQ.texrZH7PNNRMxKgTqo3CJA70-dlHgxYXBn2rVtliRxcChGcyEVAAvb6tKAnZUmn0
+
+
+###
+POST http://localhost:8080/api/books
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJkYXlhbmFAZWplbXBsby5jb20iLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwidXNlci1pZCI6Ijc5Zjc0NjVjLWU0MjMtNDQzOS05NmYxLWI2OTBiNzAwZTkyYSIsImlhdCI6MTc3MDg0Mjc2MCwiZXhwIjoxNzcwOTI5MTYwfQ.0TIqaRz1v_6FRRhN1YvdExDOMUujuJpSVg1ZcKIEYqY-aRa8lyI-Z3YG2e0XqnSP
+Content-Type: application/json
+
+{
+    "ownerId": "65fdfaf9-7fd5-4e9e-962c-72376e159ce9",
+    "isbn": "0421965372",
+    "title": "El Diablo",
+    "authors": [
+      "Jhon Smart"
+    ],
+    "description": "Libro de Terror",
+    "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsw4cR0eVtzhT1mic0JAZrerphGPrCFVs5nQ&s",
+    "status": "DESEADO",
+    "rating": 2,
+    "isLent": false
+  }

@@ -2,12 +2,14 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Book } from '../models';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BookService {
   private readonly http = inject(HttpClient);
+  private readonly storage = inject(StorageService)
   private readonly apiUrl = 'http://localhost:8080/api/books';
 
   search(query: string, userId: string): Observable<Book[]> {
@@ -18,7 +20,7 @@ export class BookService {
   }
 
   findAll(userId: string): Observable<Book[]> {
-    const headers = new HttpHeaders().set('user-id', userId);
+    const headers = new HttpHeaders({'Authorization': `Bearer ${this.storage.getToken()}`}).set('user-id', userId);
     console.log('Fetching books with userId:', userId);
     return this.http.get<Book[]>(this.apiUrl, { headers });
   }

@@ -2,6 +2,7 @@ package com.devsenior.nmanja.bibliokeep.model.dto;
 
 import jakarta.validation.constraints.*;
 
+import java.util.List;
 import java.util.Set;
 
 public record UserRequestDTO(
@@ -18,6 +19,9 @@ public record UserRequestDTO(
 
         @Min(value = 1, message = "La meta anual debe ser al menos 1")
         @Max(value = 1000, message = "La meta anual debe ser como máximo 1000")
-        Integer annualGoal
+        Integer annualGoal,
+
+
+        List<String> roles
 ) {
 }

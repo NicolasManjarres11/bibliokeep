@@ -35,6 +35,14 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public List<BookResponseDTO> getAllBooks() {
+        var books = bookRepository.findAll().stream()
+            .map(b -> bookMapper.toResponseDTO(b))
+            .toList();
+        return books;
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public List<BookResponseDTO> findAllByOwnerId(UUID ownerId) {
         var books = bookRepository.findByOwnerId(ownerId);
