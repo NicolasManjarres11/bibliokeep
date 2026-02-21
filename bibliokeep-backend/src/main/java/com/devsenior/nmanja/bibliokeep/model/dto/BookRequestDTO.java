@@ -1,9 +1,15 @@
 package com.devsenior.nmanja.bibliokeep.model.dto;
 
-import com.devsenior.nmanja.bibliokeep.model.entity.BookStatus;
-import jakarta.validation.constraints.*;
-
 import java.util.List;
+
+import com.devsenior.nmanja.bibliokeep.model.entity.BookStatus;
+
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 public record BookRequestDTO(
         @NotBlank(message = "El ISBN es requerido")
@@ -15,7 +21,8 @@ public record BookRequestDTO(
         String title,
 
         @NotEmpty(message = "Se requiere al menos un autor")
-        List<@NotBlank(message = "El nombre del autor no puede estar vacío") String> authors,
+        @NotBlank(message = "El nombre del autor no puede estar vacío")
+        List<String> authors,
 
         String description,
 

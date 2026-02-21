@@ -94,7 +94,7 @@ export class BookStoreService {
     this.setLoading(true);
     try {
       console.log('Loading books for userId:', userId);
-      const books = await firstValueFrom(this.bookService.findAll(userId));
+      const books = await firstValueFrom(this.bookService.findAll());
       console.log('Books loaded:', books);
       console.log('Number of books:', books.length);
       if (books.length === 0) {
@@ -125,7 +125,7 @@ export class BookStoreService {
 
     this.setLoading(true);
     try {
-      const books = await firstValueFrom(this.bookService.search(query, userId));
+      const books = await firstValueFrom(this.bookService.search(query));
       this.setBooks(books);
     } catch (error) {
       console.error('Error searching books:', error);

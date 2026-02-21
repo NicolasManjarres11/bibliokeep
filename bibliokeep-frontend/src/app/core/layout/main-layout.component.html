@@ -29,6 +29,11 @@
       </div>
 
       <!-- Navigation Links -->
+
+
+
+
+      
       <nav class="flex-1 p-4 space-y-2">
         <a
           routerLink="/dashboard"
@@ -52,6 +57,7 @@
         </a>
 
         <a
+          [hidden]="!hasRoleAdmin()"
           routerLink="/loans"
           routerLinkActive="bg-blue-50 text-blue-700 border-blue-200"
           class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors border border-transparent"
@@ -93,7 +99,7 @@
               <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
                 <span class="text-sm font-semibold text-gray-700">U</span>
               </div>
-              <span class="text-sm font-medium hidden sm:inline">Perfil</span>
+              <span class="text-sm font-medium hidden sm:inline">{{userEmail()}}</span>
             </button>
 
             <div [hidden]="!isProfileMenuOpen()" class="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-50" [attr.aria-hidden]="!isProfileMenuOpen()">

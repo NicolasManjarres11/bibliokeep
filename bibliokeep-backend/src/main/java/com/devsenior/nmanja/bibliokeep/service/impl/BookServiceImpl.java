@@ -1,17 +1,21 @@
 package com.devsenior.nmanja.bibliokeep.service.impl;
 
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.devsenior.nmanja.bibliokeep.mapper.BookMapper;
 import com.devsenior.nmanja.bibliokeep.model.dto.BookRequestDTO;
 import com.devsenior.nmanja.bibliokeep.model.dto.BookResponseDTO;
 import com.devsenior.nmanja.bibliokeep.model.entity.BookStatus;
+import com.devsenior.nmanja.bibliokeep.model.vo.JwtUser;
 import com.devsenior.nmanja.bibliokeep.repository.BookRepository;
 import com.devsenior.nmanja.bibliokeep.service.BookService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +26,8 @@ public class BookServiceImpl implements BookService {
     private final BookMapper bookMapper;
 
     @Override
-    public BookResponseDTO create(UUID ownerId, BookRequestDTO request) {
+    public BookResponseDTO create(BookRequestDTO request) {
+        var ownerId = getUserID();
         var book = bookMapper.toEntity(request, ownerId);
         book.setIsLent(false);
         
@@ -44,7 +49,8 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<BookResponseDTO> findAllByOwnerId(UUID ownerId) {
+    public List<BookResponseDTO> findAllByOwnerId() {
+        var ownerId = getUserID();
         var books = bookRepository.findByOwnerId(ownerId);
         return books.stream()
                 .map(bookMapper::toResponseDTO)
@@ -53,14 +59,16 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional(readOnly = true)
-    public BookResponseDTO findByIdAndOwnerId(Long id, UUID ownerId) {
+    public BookResponseDTO findByIdAndOwnerId(Long id) {
+        var ownerId = getUserID();
         var book = bookRepository.findByIdAndOwnerId(id, ownerId)
                 .orElseThrow(() -> new IllegalArgumentException("Libro no encontrado o no pertenece al usuario"));
         return bookMapper.toResponseDTO(book);
     }
 
     @Override
-    public BookResponseDTO update(Long id, UUID ownerId, BookRequestDTO request) {
+    public BookResponseDTO update(Long id, BookRequestDTO request) {
+        var ownerId = getUserID();
         var book = bookRepository.findByIdAndOwnerId(id, ownerId)
                 .orElseThrow(() -> new IllegalArgumentException("Libro no encontrado o no pertenece al usuario"));
 
@@ -75,7 +83,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void delete(Long id, UUID ownerId) {
+    public void delete(Long id) {
+        var ownerId = getUserID();
         var book = bookRepository.findByIdAndOwnerId(id, ownerId)
                 .orElseThrow(() -> new IllegalArgumentException("Libro no encontrado o no pertenece al usuario"));
 
@@ -87,7 +96,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookResponseDTO updateStatus(Long id, UUID ownerId, BookStatus status) {
+    public BookResponseDTO updateStatus(Long id, BookStatus status) {
+        var ownerId = getUserID();
         var book = bookRepository.findByIdAndOwnerId(id, ownerId)
                 .orElseThrow(() -> new IllegalArgumentException("Libro no encontrado o no pertenece al usuario"));
 
@@ -99,10 +109,26 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<BookResponseDTO> search(UUID ownerId, String query) {
+    public List<BookResponseDTO> search(String query) {
+        var ownerId = getUserID();
         var books = bookRepository.searchByOwnerId(ownerId, query);
         return books.stream()
                 .map(bookMapper::toResponseDTO)
                 .toList();
     }
+
+
+    private UUID getUserID() {
+
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if(authentication.getPrincipal() instanceof JwtUser jwt){
+            return UUID.fromString(jwt.getUserId());
+        }
+
+        return null;
+
+    }
+
+
 }

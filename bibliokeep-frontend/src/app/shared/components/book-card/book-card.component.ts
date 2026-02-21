@@ -41,7 +41,7 @@ export class BookCardComponent {
     this.statusChange.emit({ bookId: this.book.id, status });
 
     // Actualizar en el servidor
-    this.bookService.updateStatus(this.book.id, status, userId).subscribe({
+    this.bookService.updateStatus(this.book.id, status).subscribe({
       next: (updatedBook) => {
         this.bookStore.updateBook(updatedBook);
       },
@@ -63,7 +63,7 @@ export class BookCardComponent {
 
     // Actualizar en el servidor
     const updatedBook = { ...this.book, rating };
-    this.bookService.update(this.book.id, updatedBook, userId).subscribe({
+    this.bookService.update(this.book.id, updatedBook).subscribe({
       next: (book) => {
         this.bookStore.updateBook(book);
       },

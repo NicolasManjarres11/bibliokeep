@@ -12,41 +12,35 @@ export class BookService {
   private readonly storage = inject(StorageService)
   private readonly apiUrl = 'http://localhost:8080/api/books';
 
-  search(query: string, userId: string): Observable<Book[]> {
-    const headers = new HttpHeaders().set('user-id', userId);
+
+
+  search(query: string): Observable<Book[]> {
     const params = new HttpParams().set('query', query);
     
-    return this.http.get<Book[]>(`${this.apiUrl}/search`, { headers, params });
+    return this.http.get<Book[]>(`${this.apiUrl}/search`, { params });
   }
 
-  findAll(userId: string): Observable<Book[]> {
-    const headers = new HttpHeaders({'Authorization': `Bearer ${this.storage.getToken()}`}).set('user-id', userId);
-    console.log('Fetching books with userId:', userId);
-    return this.http.get<Book[]>(this.apiUrl, { headers });
+  findAll(): Observable<Book[]> {
+    return this.http.get<Book[]>(this.apiUrl);
   }
 
-  findById(id: number, userId: string): Observable<Book> {
-    const headers = new HttpHeaders().set('user-id', userId);
-    return this.http.get<Book>(`${this.apiUrl}/${id}`, { headers });
+  findById(id: number): Observable<Book> {
+    return this.http.get<Book>(`${this.apiUrl}/${id}`);
   }
 
-  create(book: Partial<Book>, userId: string): Observable<Book> {
-    const headers = new HttpHeaders().set('user-id', userId);
-    return this.http.post<Book>(this.apiUrl, book, { headers });
+  create(book: Partial<Book>): Observable<Book> {
+    return this.http.post<Book>(this.apiUrl, book);
   }
 
-  update(id: number, book: Partial<Book>, userId: string): Observable<Book> {
-    const headers = new HttpHeaders().set('user-id', userId);
-    return this.http.put<Book>(`${this.apiUrl}/${id}`, book, { headers });
+  update(id: number, book: Partial<Book>): Observable<Book> {
+    return this.http.put<Book>(`${this.apiUrl}/${id}`, book);
   }
 
-  updateStatus(id: number, status: string, userId: string): Observable<Book> {
-    const headers = new HttpHeaders().set('user-id', userId);
-    return this.http.patch<Book>(`${this.apiUrl}/${id}/status`, { status }, { headers });
+  updateStatus(id: number, status: string): Observable<Book> {
+    return this.http.patch<Book>(`${this.apiUrl}/${id}/status`, { status });
   }
 
-  delete(id: number, userId: string): Observable<void> {
-    const headers = new HttpHeaders().set('user-id', userId);
-    return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers });
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

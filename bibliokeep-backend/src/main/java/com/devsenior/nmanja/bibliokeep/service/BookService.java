@@ -1,27 +1,26 @@
 package com.devsenior.nmanja.bibliokeep.service;
 
+import java.util.List;
+
 import com.devsenior.nmanja.bibliokeep.model.dto.BookRequestDTO;
 import com.devsenior.nmanja.bibliokeep.model.dto.BookResponseDTO;
 import com.devsenior.nmanja.bibliokeep.model.entity.BookStatus;
 
-import java.util.List;
-import java.util.UUID;
-
 public interface BookService {
 
-    BookResponseDTO create(UUID ownerId, BookRequestDTO request);
+    BookResponseDTO create( BookRequestDTO request);
 
     List<BookResponseDTO> getAllBooks();
 
-    List<BookResponseDTO> findAllByOwnerId(UUID ownerId);
+    List<BookResponseDTO> findAllByOwnerId();
 
-    BookResponseDTO findByIdAndOwnerId(Long id, UUID ownerId);
+    BookResponseDTO findByIdAndOwnerId(Long id );
 
-    BookResponseDTO update(Long id, UUID ownerId, BookRequestDTO request);
+    BookResponseDTO update(Long id,  BookRequestDTO request);
 
-    void delete(Long id, UUID ownerId);
+    void delete(Long id );
 
-    BookResponseDTO updateStatus(Long id, UUID ownerId, BookStatus status);
+    BookResponseDTO updateStatus(Long id,  BookStatus status);
 
-    List<BookResponseDTO> search(UUID ownerId, String query);
+    List<BookResponseDTO> search( String query);
 }
